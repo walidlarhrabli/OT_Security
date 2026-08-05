@@ -37,6 +37,8 @@ The primary objective of this practical work is to design, verify, and secure an
 2. **OT Network Interoperability:** Interconnecting a software PLC (OpenPLC) with a SCADA platform (ScadaBR) using the standard **Modbus TCP** industrial protocol.
 3. **Security Assessment & Network Auditing:** Mapping and analyzing industrial LAN traffic to assess asset visibility and evaluate vulnerabilities inherent to unencrypted industrial telemetry protocols.
 
+> 🖥️ **Lab environment note:** the entire OpenPLC + ScadaBR stack runs on a single personal host machine (Windows). Network reconnaissance in Part 05 is performed from a **separate Kali VM** connected to the same LAN — this distinction explains the two different addressing schemes used later in the document (loopback vs. LAN IP).
+
 ---
 
 ## ⚙️ Part 01: Introduction and Installation of OpenPLC
@@ -193,6 +195,8 @@ To enable data acquisition and remote commands from the SCADA system, the Modbus
 
 In ScadaBR, a `Modbus IP` **Data Source** is created to periodically poll the OpenPLC controller.
 
+> 🖥️ **Topology note:** OpenPLC Runtime and ScadaBR run on the **same host machine** (Windows). ScadaBR therefore polls OpenPLC's Modbus TCP server over the loopback interface (`127.0.0.1`) — the two services never actually leave the physical machine to talk to each other at this stage.
+
 * **Data Source Parameters (`Plant01`):**
   - **Name:** `Plant01` (XID: `DS_320460`).
   - **Connection Type:** `Modbus IP`.
@@ -277,6 +281,8 @@ The **Graphical View** provides operators with a visual, interactive synoptic di
 ---
 
 ## 🔍 Part 05: Network Reconnaissance with Nmap & Wireshark
+
+> 🖥️ **Topology note:** unlike Part 04 (where ScadaBR and OpenPLC talk to each other locally via `127.0.0.1`), the reconnaissance in this part is launched from a **separate Kali VM** sitting on the same LAN as the Windows host. From Kali's point of view, `127.0.0.1` would refer to Kali itself — so the target is instead scanned via the Windows host's real LAN-facing address (`192.168.11.103`), which is where OpenPLC's Modbus TCP server is actually reachable from outside the host.
 
 ### ⚠️ Security Context & OT Scanning Risks
 In Operational Technology (OT) and Industrial Control System (ICS) environments, active network scanning carries significant operational risks:
