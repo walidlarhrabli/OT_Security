@@ -50,7 +50,7 @@ The lab reproduces a minimal ICS segment with three roles on a single virtual LA
 │  ScadaBR VM          → 192.168.90.5                      │
 │  └── SCADA supervision — web interface on port 8080      │
 │                                                          │
-│  Parrot VM           → 192.168.90.114                    │
+│  Kali VM           → 192.168.90.114                    │
 │  └── Attacker machine (Metasploit / Ettercap)            │
 └──────────────────────────────────────────────────────────┘
 ```
